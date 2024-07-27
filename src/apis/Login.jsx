@@ -4,7 +4,7 @@ const login = async (nickname) => {
     try {
         const response = await axios.post(`http://52.79.249.11/members/login`, { nickname });
         if (response.status === 200) {
-            return { status: 200, data: { nickname: response.data.nickname } };
+            return { status: 200, data: response.data };
         }
     } catch (error) {
         if (error.response && error.response.status === 404) {

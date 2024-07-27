@@ -4,19 +4,7 @@ const getMemberInfo = async (nickname) => {
     try {
         const response = await axios.get(`http://52.79.249.11/members/${nickname}`);
         if (response.status === 200) {
-            return {
-                status: 200,
-                data: {
-                    nickname: response.data.nickname,
-                    tier: response.data.tier,
-                    mileage: response.data.mileage,
-                    monthlyMileage: response.data.monthlyMileage,
-                    overallMonthlyRank: response.data.overallMonthlyRank,
-                    tierMonthlyRank: response.data.tierMonthlyRank,
-                    totalMembers: response.data.totalMembers,
-                    totalTierMembers: response.data.totalTierMembers
-                }
-            };
+            return { status: 200, data: response.data };
         }
     } catch (error) {
         if (error.response && error.response.status === 404) {
