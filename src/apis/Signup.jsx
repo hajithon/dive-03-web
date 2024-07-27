@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const Signup = async (nickname) => {
   try {
-    const response = await axios.post(`${import.meta.env.VITE_API_URL}/member`, {
+    const response = await axios.post(`https://52.79.249.11/member`, {
       nickname
     });
     return response.data;

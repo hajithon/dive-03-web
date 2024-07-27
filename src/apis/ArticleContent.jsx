@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const ArticleContent = async (articleId, nickname) => {
   try {
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/articles/${articleId}`, {
+    const response = await axios.get(`https://52.79.249.11/articles/${articleId}`, {
       data: { nickname }
     });
     return response.data;
