@@ -1,16 +1,24 @@
 import { typo, palette } from "../shared/styles/index";
-import React from "react";
+import React, { useState } from "react";
 import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 
-export const Tag = ({ tag }) => {
-  return (
-    <button
-      className={css`
-        border-radius: 20px;
-        background-color: ${palette.default.white};
-      `}
-    >
-      {tag}
-    </button>
-  );
+const TagButton = styled.button`
+  border: none;
+  border-radius: 20px;
+
+  padding-block: 0px;
+  padding-inline: 0px;
+  padding: 8px 16px;
+
+  background-color: ${(props) =>
+    props.clicked ? palette.default.white : palette.primary.blue70};
+
+  ${typo.body.h8}
+  color: ${(props) =>
+    props.clicked ? palette.coolGray.gray70 : palette.default.white}
+`;
+
+export const Tag = (props) => {
+  return <TagButton clicked={props.clicked}>{props.tag}</TagButton>;
 };
