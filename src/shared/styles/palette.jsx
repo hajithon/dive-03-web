@@ -17,4 +17,10 @@ export const palette = {
     outline: "#F89090",
     background: "#FFF2F2",
   },
+
+  default: {
+    white: "#FFFFFF",
+    backgroundGray: "#FBFBFB",
+    blueGray: "#F0F0F3",
+  },
 };

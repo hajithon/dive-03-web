@@ -1,7 +1,11 @@
-import "./App.css";
+import { Tag } from "./components/Tag";
 
 function App() {
-  return <></>;
+  return (
+    <>
+      <Tag tag="hi"></Tag>
+    </>
+  );
 }
 
 export default App;
