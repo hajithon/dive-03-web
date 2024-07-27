@@ -8,6 +8,7 @@ export const GlobalStyle = css`
     width: 100vw;
     height: auto;
     font-family: "Pretendard";
+    overflow-y: auto;
 
     background-color: ${palette.default.backgroundGray};
   }
