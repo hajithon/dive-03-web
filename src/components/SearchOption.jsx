@@ -5,7 +5,8 @@ import { Tag } from "./Tag";
 const Wrapper = styled.div`
   display: flex;
   gap: 34px;
-  justify-content: center;
+  align-items: center;
+
   .search-option {
     width: 70px;
     color: ${palette.primary.blue100};
@@ -18,12 +19,27 @@ const Wrapper = styled.div`
   }
 `;
 
-export const SearchOption = () => {
+export const SearchOption = ({ text }) => {
   return (
     <Wrapper>
       <div className="search-option">{text}</div>
       <div className="search-options">
-        <Tag tag={"인문학"} clicked={false}></Tag>
+        {text == "분야" ? (
+          <>
+            <Tag text={"인문학"} clicked={false}></Tag>
+            <Tag text={"자연과학"} clicked={false}></Tag>
+            <Tag text={"사회과학"} clicked={false}></Tag>
+            <Tag text={"문화예술"} clicked={false}></Tag>
+            <Tag text={"공학"} clicked={false}></Tag>
+            <Tag text={"예술"} clicked={false}></Tag>
+          </>
+        ) : (
+          <>
+            <Tag text={"5분 미만"} clicked={false}></Tag>
+            <Tag text={"5분 - 20분"} clicked={false}></Tag>
+            <Tag text={"20분 초과"} clicked={false}></Tag>
+          </>
+        )}
       </div>
     </Wrapper>
   );

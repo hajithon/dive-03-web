@@ -19,8 +19,11 @@ const TagButton = styled.button`
   ${typo.body.h8}
   color: ${(props) =>
     props.clicked ? palette.coolGray.gray70 : palette.default.white}
+
+  ${(props) =>
+    props.clicked ? "" : `border: 1px solid ${palette.primary.blue100}`}
 `;
 
 export const Tag = (props) => {
-  return <TagButton clicked={props.clicked}>{props.tag}</TagButton>;
+  return <TagButton clicked={!props.clicked}>{props.text}</TagButton>;
 };

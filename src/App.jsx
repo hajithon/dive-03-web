@@ -11,6 +11,8 @@ import { Quizes } from "./widgets/Quizes";
 import { Article } from "./widgets/Article";
 import { Ranking } from "./widgets/Ranking";
 import { ArticleNotification } from "./components/ArticleNotification";
+import { SearchOption } from "./components/SearchOption";
+import { SearchEngine } from "./widgets/SearchEngine";
 
 const Wrapper = styled.div`
   position: absolute;
@@ -26,9 +28,8 @@ function App() {
       <GNB props={"베이스 입문자들을 위한 알쓸신잡"}>오예</GNB>
       <SNB user={{ name: "하이픈", tier: "골드", point: 1000 }}></SNB>
       <Wrapper>
-        <Ranking></Ranking>
-        <ArticleNotification progress={75}></ArticleNotification>
         <Quizes></Quizes>
+        <SearchEngine></SearchEngine>
         <Article
           article={{ title: "2. 베이스의 역사", content: CONTENT }}
         ></Article>
