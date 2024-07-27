@@ -23,4 +23,18 @@ export const palette = {
     backgroundGray: "#FBFBFB",
     blueGray: "#F0F0F3",
   },
+
+  coolGray: {
+    gray10: "#F2F4F8",
+    gray20: "#DDE1E6",
+    gray30: "#C1C7CD",
+    gray40: "#A2A9B0",
+    gray50: "#878D96",
+    gray60: "#697077",
+    gray70: "#4D5358",
+    gray80: "#343A3F",
+    gray90: "#21272A",
+    gray100: "#121619",
+    black: "#121619",
+  },
 };
