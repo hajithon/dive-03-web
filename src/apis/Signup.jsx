@@ -1,56 +1,39 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 
 const Signup = () => {
   const [nickname, setNickname] = useState('');
-  const [responseMessage, setResponseMessage] = useState('');
+  const [status, setStatus] = useState('');
 
-  const handleChange = (e) => {
-    setNickname(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload = { nickname };
-
-    // 실제 회원가입 엔드포인트로 요청을 보냅니다.
-    axios.post('https://api.yourservice.com/member', payload)
-      .then((response) => {
-        if (response.status === 201) {
-          setResponseMessage('회원가입이 성공적으로 완료되었습니다.');
-        }
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 409) {
-          setResponseMessage('닉네임이 중복되었습니다.');
-        } else {
-          setResponseMessage('오류가 발생했습니다.');
-        }
-      });
+    try {
+      const response = await axiosInstance.post('/member', { nickname });
+      if (response.status === 201) {
+        setStatus('회원가입 성공!');
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 409) {
+        setStatus('닉네임 중복');
+      } else {
+        setStatus('에러 발생');
+      }
+    }
   };
 
   return (
     <div>
-      <h1>Sign Up</h1>
+      <h1>회원가입</h1>
       <form onSubmit={handleSubmit}>
-        <label>
-          Nickname:
-          <input
-            type="text"
-            name="nickname"
-            value={nickname}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <button type="submit">Sign Up</button>
+        <input 
+          type="text" 
+          value={nickname} 
+          onChange={(e) => setNickname(e.target.value)} 
+          placeholder="닉네임"
+        />
+        <button type="submit">가입</button>
       </form>
-      {responseMessage && (
-        <div>
-          <h2>Response</h2>
-          <p>{responseMessage}</p>
-        </div>
-      )}
+      <p>{status}</p>
     </div>
   );
 };

@@ -1,71 +1,48 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 
 const ArticleContent = () => {
+  const [nickname, setNickname] = useState('');
   const [articleId, setArticleId] = useState('');
-  const [article, setArticle] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [articleContent, setArticleContent] = useState(null);
+  const [status, setStatus] = useState('');
 
-  const handleChange = (e) => {
-    setArticleId(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    axios.get(`https://api.yourservice.com/articles/${articleId}`)
-      .then((response) => {
-        if (response.status === 200) {
-          setArticle(response.data);
-          setErrorMessage('');
-        }
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 404) {
-          setErrorMessage('존재하지 않는 글입니다.');
-          setArticle(null);
-        } else {
-          setErrorMessage('오류가 발생했습니다.');
-          setArticle(null);
-        }
-      });
+  const handleFetch = async () => {
+    try {
+      const response = await axiosInstance.get(`/articles/${articleId}`, { data: { nickname } });
+      setArticleContent(response.data);
+      setStatus('조회 성공');
+    } catch (error) {
+      setStatus('에러 발생');
+    }
   };
 
   return (
     <div>
-      <h1>Article Content</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Article ID:
-          <input
-            type="text"
-            name="articleId"
-            value={articleId}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <button type="submit">Get Article Content</button>
-      </form>
-      {errorMessage && (
+      <h1>글 내용 조회</h1>
+      <input 
+        type="text" 
+        value={nickname} 
+        onChange={(e) => setNickname(e.target.value)} 
+        placeholder="닉네임"
+      />
+      <input 
+        type="text" 
+        value={articleId} 
+        onChange={(e) => setArticleId(e.target.value)} 
+        placeholder="글 ID"
+      />
+      <button onClick={handleFetch}>조회</button>
+      {status && <p>{status}</p>}
+      {articleContent && (
         <div>
-          <h2>Error</h2>
-          <p>{errorMessage}</p>
-        </div>
-      )}
-      {article && (
-        <div>
-          <h2>{article.title}</h2>
-          <p>Nickname: {article.nickname}</p>
-          <p>Total Contents: {article.totalContents}</p>
-          <div>
-            {article.contents.map((content, index) => (
-              <div key={index}>
-                <h3>{content.subtitle}</h3>
-                <p>{content.content}</p>
-              </div>
-            ))}
-          </div>
+          <h2>{articleContent.title}</h2>
+          {articleContent.contents.map((content, index) => (
+            <div key={index}>
+              <h3>{content.subtitle}</h3>
+              <p>{content.content}</p>
+            </div>
+          ))}
         </div>
       )}
     </div>

@@ -1,75 +1,50 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 
 const QuizContent = () => {
+  const [nickname, setNickname] = useState('');
   const [articleId, setArticleId] = useState('');
-  const [quizData, setQuizData] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [quizzes, setQuizzes] = useState(null);
+  const [status, setStatus] = useState('');
 
-  const handleChange = (e) => {
-    setArticleId(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    axios.get(`https://api.yourservice.com/articles/quizzes/${articleId}`)
-      .then((response) => {
-        if (response.status === 200) {
-          setQuizData(response.data);
-          setErrorMessage('');
-        }
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 404) {
-          setErrorMessage('존재하지 않는 글입니다.');
-          setQuizData(null);
-        } else {
-          setErrorMessage('오류가 발생했습니다.');
-          setQuizData(null);
-        }
-      });
+  const handleFetch = async () => {
+    try {
+      const response = await axiosInstance.get(`/articles/quizzes/${articleId}`, { data: { nickname } });
+      setQuizzes(response.data);
+      setStatus('조회 성공');
+    } catch (error) {
+      setStatus('에러 발생');
+    }
   };
 
   return (
     <div>
-      <h1>Quiz Content</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Article ID:
-          <input
-            type="text"
-            name="articleId"
-            value={articleId}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <button type="submit">Get Quiz Content</button>
-      </form>
-      {errorMessage && (
+      <h1>퀴즈 조회</h1>
+      <input 
+        type="text" 
+        value={nickname} 
+        onChange={(e) => setNickname(e.target.value)} 
+        placeholder="닉네임"
+      />
+      <input 
+        type="text" 
+        value={articleId} 
+        onChange={(e) => setArticleId(e.target.value)} 
+        placeholder="글 ID"
+      />
+      <button onClick={handleFetch}>조회</button>
+      {status && <p>{status}</p>}
+      {quizzes && (
         <div>
-          <h2>Error</h2>
-          <p>{errorMessage}</p>
-        </div>
-      )}
-      {quizData && (
-        <div>
-          <h2>{quizData.title}</h2>
-          <p>Nickname: {quizData.nickname}</p>
-          <p>Total Quizzes: {quizData.totalQuizzes}</p>
-          <div>
-            {quizData.quizzes.map((quiz) => (
-              <div key={quiz.quizId}>
-                <h3>Question {quiz.number}: {quiz.question}</h3>
-                <ul>
-                  {quiz.options.map((option, index) => (
-                    <li key={index}>{option.option}: {option.content}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+          <h2>{quizzes.title}</h2>
+          {quizzes.quizzes.map(quiz => (
+            <div key={quiz.quizId}>
+              <p>{quiz.number}. {quiz.question}</p>
+              {quiz.options.map(option => (
+                <p key={option.option}>{option.option}: {option.content}</p>
+              ))}
+            </div>
+          ))}
         </div>
       )}
     </div>

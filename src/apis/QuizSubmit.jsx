@@ -1,119 +1,91 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 
 const QuizSubmit = () => {
-  const [articleId, setArticleId] = useState('');
   const [nickname, setNickname] = useState('');
-  const [answers, setAnswers] = useState({});
-  const [responseMessage, setResponseMessage] = useState('');
+  const [articleId, setArticleId] = useState('');
+  const [quizzes, setQuizzes] = useState([{ quizId: '', number: '', answer: '' }]);
+  const [result, setResult] = useState(null);
+  const [status, setStatus] = useState('');
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'articleId') {
-      setArticleId(value);
-    } else if (name === 'nickname') {
-      setNickname(value);
-    } else {
-      setAnswers((prevAnswers) => ({
-        ...prevAnswers,
-        [name]: value,
-      }));
-    }
+  const handleQuizChange = (index, field, value) => {
+    const newQuizzes = [...quizzes];
+    newQuizzes[index][field] = value;
+    setQuizzes(newQuizzes);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleAddQuiz = () => {
+    setQuizzes([...quizzes, { quizId: '', number: '', answer: '' }]);
+  };
 
-    const payload = {
-      nickname: nickname,
-      totalQuizzes: Object.keys(answers).length,
-      quizzes: Object.keys(answers).map((key) => ({
-        quizId: parseInt(key),
-        answer: answers[key]
-      }))
-    };
-
-    axios.post(`https://api.yourservice.com/articles/quizzes/${articleId}`, payload)
-      .then((response) => {
-        if (response.status === 200) {
-          setResponseMessage('퀴즈 제출이 성공적으로 완료되었습니다.');
-        }
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 404) {
-          setResponseMessage('존재하지 않는 글입니다.');
-        } else {
-          setResponseMessage('오류가 발생했습니다.');
-        }
+  const handleSubmit = async () => {
+    try {
+      const response = await axiosInstance.post(`/articles/quizzes/${articleId}`, {
+        nickname,
+        totalQuizzes: quizzes.length,
+        correctQuizzes: quizzes.filter(q => q.answer).length, // Example logic for correct answers
+        quizzes
       });
+      setResult(response.data);
+      setStatus('제출 성공');
+    } catch (error) {
+      setStatus('에러 발생');
+    }
   };
 
   return (
     <div>
-      <h1>Submit Quiz Answers</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Article ID:
-          <input
-            type="text"
-            name="articleId"
-            value={articleId}
-            onChange={handleChange}
+      <h1>퀴즈 정답 제출</h1>
+      <input 
+        type="text" 
+        value={nickname} 
+        onChange={(e) => setNickname(e.target.value)} 
+        placeholder="닉네임"
+      />
+      <input 
+        type="text" 
+        value={articleId} 
+        onChange={(e) => setArticleId(e.target.value)} 
+        placeholder="글 ID"
+      />
+      {quizzes.map((quiz, index) => (
+        <div key={index}>
+          <input 
+            type="text" 
+            value={quiz.quizId} 
+            onChange={(e) => handleQuizChange(index, 'quizId', e.target.value)} 
+            placeholder="퀴즈 ID"
           />
-        </label>
-        <br />
-        <label>
-          Nickname:
-          <input
-            type="text"
-            name="nickname"
-            value={nickname}
-            onChange={handleChange}
+          <input 
+            type="text" 
+            value={quiz.number} 
+            onChange={(e) => handleQuizChange(index, 'number', e.target.value)} 
+            placeholder="번호"
           />
-        </label>
-        <br />
-        <label>
-          Answer 1:
-          <input
-            type="text"
-            name="123"
-            onChange={handleChange}
+          <input 
+            type="text" 
+            value={quiz.answer} 
+            onChange={(e) => handleQuizChange(index, 'answer', e.target.value)} 
+            placeholder="정답"
           />
-        </label>
-        <br />
-        <label>
-          Answer 2:
-          <input
-            type="text"
-            name="234"
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Answer 3:
-          <input
-            type="text"
-            name="345"
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Answer 4:
-          <input
-            type="text"
-            name="456"
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <button type="submit">Submit Answers</button>
-      </form>
-      {responseMessage && (
+        </div>
+      ))}
+      <button onClick={handleAddQuiz}>퀴즈 추가</button>
+      <button onClick={handleSubmit}>제출</button>
+      {status && <p>{status}</p>}
+      {result && (
         <div>
-          <h2>Response</h2>
-          <p>{responseMessage}</p>
+          <p>닉네임: {result.nickname}</p>
+          <p>얻은 마일리지: {result.earnedMileages}</p>
+          <p>총 마일리지: {result.totalMileages}</p>
+          <h2>{result.title}</h2>
+          {result.quizzes.map(quiz => (
+            <div key={quiz.quizId}>
+              <p>번호: {quiz.number}</p>
+              <p>제출한 정답: {quiz.submittedAnswer}</p>
+              <p>정답: {quiz.correctAnswer}</p>
+            </div>
+          ))}
         </div>
       )}
     </div>
