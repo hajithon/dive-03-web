@@ -13,7 +13,7 @@ const SideNavBar = styled.div`
   position: absolute;
   top: 80px;
   width: 280px;
-  height: 100%;
+  height: 100vh;
 
   padding: 64px 20px;
   box-sizing: border-box;

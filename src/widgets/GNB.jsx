@@ -6,6 +6,7 @@ import logo from "../assets/images/Logo.svg";
 import { QuitButton } from "../components/QuitButton";
 
 const GlobalNavBar = styled.div`
+  z-index: 10;
   width: 100vw;
   height: 80px;
   box-sizing: border-box;
