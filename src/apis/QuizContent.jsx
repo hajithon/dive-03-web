@@ -1,14 +1,16 @@
 import axios from 'axios';
 
-const getQuizContent = async (articleId, nickname) => {
+const getQuizContent = async (articleId, queryParams) => {
     try {
-        const response = await axios.get(`http://52.79.249.11/articles/quizzes/${articleId}`, {
-            params: { nickname }
-        });
+        const response = await axios.get(`http://52.79.249.11/articles/quizzes/${articleId}`, { params: queryParams });
         return response.data;
     } catch (error) {
-        // 명세에 없으므로 기본 처리 없음
-        return null;
+        if (error.response) {
+            const message = error.response.data ? error.response.data.message : 'Unknown error';
+            return { status: error.response.status, message };
+        } else {
+            return { status: 500, message: 'Server error' };
+        }
     }
 };
 

@@ -1,12 +1,20 @@
 import axios from 'axios';
 
-const submitQuizAnswers = async (articleId, quizData) => {
+const submitQuizAnswers = async (articleId, nickname, quizzes) => {
     try {
-        const response = await axios.post(`http://52.79.249.11/articles/quizzes/${articleId}`, quizData);
-        return response.data;
+        const response = await axios.post(`http://52.79.249.11/articles/quizzes/${articleId}`, {
+            nickname,
+            quizzes
+        });
+        if (response.status === 200) {
+            return response.data;
+        }
     } catch (error) {
-        // 명세에 없으므로 기본 처리 없음
-        return null;
+        if (error.response) {
+            return { status: error.response.status, message: error.response.data.message };
+        } else {
+            return { status: 500, message: 'Server error' };
+        }
     }
 };
 
