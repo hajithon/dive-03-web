@@ -6,6 +6,7 @@ export const GlobalStyle = css`
   ${emotionReset}
   body {
     width: 100vw;
+    height: auto;
     font-family: "Pretendard";
 
     background-color: ${palette.default.backgroundGray};

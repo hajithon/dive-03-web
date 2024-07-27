@@ -7,7 +7,7 @@ import { QuitButton } from "../components/QuitButton";
 
 const GlobalNavBar = styled.div`
   width: 100vw;
-  height: 78px;
+  height: 80px;
   box-sizing: border-box;
   border: 1px solid ${palette.coolGray.gray20};
   padding: 0 45px 0 45px;
