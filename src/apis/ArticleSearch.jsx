@@ -1,13 +1,20 @@
-import React from 'react';
 import axios from 'axios';
 
-const ArticleSearch = async (params) => {
-  try {
-    const response = await axios.get(`https://52.79.249.11/articles`, { params });
-    return response.data;
-  } catch (error) {
-    return { error: '오류가 발생했습니다' };
-  }
+const searchArticles = async (params, nickname) => {
+    try {
+        const response = await axios.get(`http://52.79.249.11/articles`, {
+            params,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: { nickname }
+        });
+        if (response.status === 200) {
+            return { status: 200, data: response.data };
+        }
+    } catch (error) {
+        // 명세에 없으므로 기본 처리 없음
+    }
 };
 
-export default ArticleSearch;
+export default searchArticles;

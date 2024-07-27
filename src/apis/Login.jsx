@@ -1,19 +1,16 @@
-import React from 'react';
 import axios from 'axios';
 
-const Login = async (nickname) => {
-  try {
-    const response = await axios.post(`https://52.79.249.11/login`, {
-      nickname
-    });
-    return response.data;
-  } catch (error) {
-    if (error.response && error.response.status === 404) {
-      return { error: '멤버를 찾을 수 없습니다' };
-    } else {
-      return { error: '오류가 발생했습니다' };
+const login = async (nickname) => {
+    try {
+        const response = await axios.post(`http://52.79.249.11/members/login`, { nickname });
+        if (response.status === 200) {
+            return { status: 200, data: { nickname: response.data.nickname } };
+        }
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            return { status: 404, message: 'not found' };
+        }
     }
-  }
 };
 
-export default Login;
+export default login;

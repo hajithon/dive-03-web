@@ -1,0 +1,13 @@
+{
+  "articles": [
+    { "id": 1, "title": "Article 1", "content": "Content of article 1" },
+    { "id": 2, "title": "Article 2", "content": "Content of article 2" }
+  ],
+  "quizzes": [
+    { "id": 1, "question": "Question 1", "answer": "Answer 1" },
+    { "id": 2, "question": "Question 2", "answer": "Answer 2" }
+  ],
+  "users": [
+    { "id": 1, "name": "John Doe", "email": "john@example.com", "password": "password123" }
+  ]
+}
