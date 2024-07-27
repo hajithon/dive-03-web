@@ -18,7 +18,7 @@ const GlobalNavBar = styled.div`
 
   background-color: ${palette.default.white};
 
-  position: absolute;
+  position: fixed;
   top: 0;
 
   gap: auto;

@@ -87,10 +87,10 @@ export const SNB = ({ user }) => {
       <List>
         <div className="snb-user-point">
           <img src={SNB_Point} width={24}></img>
-          <Space width={1}></Space>
+          <Space width={16}></Space>
           <div className="snb-user-point-text">누적 포인트</div>
-          <Space width={50}></Space>
-          <div className="snb-user-point-value">{user.point}</div>
+          <Space width={44}></Space>
+          <div className="snb-user-point-value">{user.point}P</div>
           {/** SNB space-between 적용하기 */}
         </div>
         <Space height={14}></Space>

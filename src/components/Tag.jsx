@@ -7,6 +7,8 @@ const TagButton = styled.button`
   border: none;
   border-radius: 20px;
 
+  height: auto;
+
   padding-block: 0px;
   padding-inline: 0px;
   padding: 8px 16px;
